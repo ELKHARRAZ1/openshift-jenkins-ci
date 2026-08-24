@@ -1,0 +1,4 @@
+git:latest
+workflow-aggregator:latest
+credentials-binding:latest
+pipeline-stage-view:latest

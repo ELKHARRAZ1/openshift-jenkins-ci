@@ -1,0 +1,21 @@
+services:
+  jenkins:
+    build: .
+    container_name: jenkins-crc
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    # CRC no es resoluble por DNS dentro del contenedor: hay que apuntar
+    # manualmente a la IP que da "crc ip" en el host Windows.
+    # Sustituye 192.168.130.11 por el resultado real de `crc ip`.
+    extra_hosts:
+      - "api.crc.testing:192.168.130.11"
+      - "oauth-openshift.apps-crc.testing:192.168.130.11"
+      - "console-openshift-console.apps-crc.testing:192.168.130.11"
+      # anade aqui una linea por cada ruta (route) de app que Jenkins necesite tocar
+
+volumes:
+  jenkins_home:
