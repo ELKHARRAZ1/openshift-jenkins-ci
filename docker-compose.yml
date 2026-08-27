@@ -8,14 +8,15 @@ services:
       - "50000:50000"
     volumes:
       - jenkins_home:/var/jenkins_home
-    # CRC no es resoluble por DNS dentro del contenedor: hay que apuntar
-    # manualmente a la IP que da "crc ip" en el host Windows.
-    # Sustituye 192.168.130.11 por el resultado real de `crc ip`.
+    # CRC 4.22 en Windows NO usa una IP de VM: publica la API en el
+    # loopback del host. Desde el contenedor, 127.0.0.1 seria el propio
+    # contenedor, asi que usamos el alias especial host-gateway, que Docker
+    # resuelve a la maquina anfitriona.
     extra_hosts:
-      - "api.crc.testing:192.168.130.11"
-      - "oauth-openshift.apps-crc.testing:192.168.130.11"
-      - "console-openshift-console.apps-crc.testing:192.168.130.11"
-      # anade aqui una linea por cada ruta (route) de app que Jenkins necesite tocar
+      - "api.crc.testing:host-gateway"
+      - "oauth-openshift.apps-crc.testing:host-gateway"
+      - "console-openshift-console.apps-crc.testing:host-gateway"
 
 volumes:
   jenkins_home:
+    external: true
